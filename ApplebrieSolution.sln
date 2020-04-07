@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.1062
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applebrie.WebApi", "Applebrie.WebApi\Applebrie.WebApi.csproj", "{E067B18C-C688-4EF0-BEB7-9FD0AED1F451}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Applebrie.WebApi", "Applebrie.WebApi\Applebrie.WebApi.csproj", "{E067B18C-C688-4EF0-BEB7-9FD0AED1F451}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applebrie.Core", "Applebrie.Core\Applebrie.Core.csproj", "{31340705-605E-4532-9716-1C82B76F04F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applebrie.Infrastructure", "Applebrie.Infrastructure\Applebrie.Infrastructure.csproj", "{7FA06B19-B126-4D9F-98E6-2B35012F7243}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{E067B18C-C688-4EF0-BEB7-9FD0AED1F451}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E067B18C-C688-4EF0-BEB7-9FD0AED1F451}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E067B18C-C688-4EF0-BEB7-9FD0AED1F451}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31340705-605E-4532-9716-1C82B76F04F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31340705-605E-4532-9716-1C82B76F04F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31340705-605E-4532-9716-1C82B76F04F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31340705-605E-4532-9716-1C82B76F04F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FA06B19-B126-4D9F-98E6-2B35012F7243}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FA06B19-B126-4D9F-98E6-2B35012F7243}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FA06B19-B126-4D9F-98E6-2B35012F7243}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FA06B19-B126-4D9F-98E6-2B35012F7243}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,8 +1,9 @@
-﻿using Applebrie.WebApi.Filters;
+﻿using Applebrie.Infrastructure;
+using Applebrie.WebApi.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,7 +21,8 @@ namespace Applebrie.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDbContext<ApplebrieDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             //services.AddAutoMapper(typeof(Startup));
 
             services.AddMvc(options =>
@@ -32,14 +34,14 @@ namespace Applebrie.WebApi
 
             services.AddRouting(options => options.LowercaseUrls = true);
 
-            services.AddApiVersioning(options =>
-            {
-                options.ApiVersionReader = new MediaTypeApiVersionReader();
-                options.AssumeDefaultVersionWhenUnspecified = true;
-                options.ReportApiVersions = true;
-                options.DefaultApiVersion = new ApiVersion(1, 0);
-                options.ApiVersionSelector = new CurrentImplementationApiVersionSelector(options);
-            });
+            //services.AddApiVersioning(options =>
+            //{
+            //    options.ApiVersionReader = new MediaTypeApiVersionReader();
+            //    options.AssumeDefaultVersionWhenUnspecified = true;
+            //    options.ReportApiVersions = true;
+            //    options.DefaultApiVersion = new ApiVersion(1, 0);
+            //    options.ApiVersionSelector = new CurrentImplementationApiVersionSelector(options);
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
