@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Applebrie.WebApi.Controllers
 {
+    //[Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     //[ApiVersion("1.0")]
@@ -25,8 +27,29 @@ namespace Applebrie.WebApi.Controllers
             return "value";
         }
 
+
+        /// <summary>
+        /// Creates a TodoItem.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /Todo
+        ///     {
+        ///        "id": 1,
+        ///        "name": "Item1",
+        ///        "isComplete": true
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="value"></param>
+        /// <returns>A newly created TodoItem</returns>
+        /// <response code="201">Returns the newly created item</response>
+        /// <response code="400">If the item is null</response> 
         // POST api/values
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public void Post([FromBody] string value)
         {
         }
@@ -37,6 +60,11 @@ namespace Applebrie.WebApi.Controllers
         {
         }
 
+
+        /// <summary>
+        /// Deletes a specific TodoItem.
+        /// </summary>
+        /// <param name="id"></param> 
         // DELETE api/values/5
         [HttpDelete("{id}")]
         public void Delete(int id)
