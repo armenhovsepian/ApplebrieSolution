@@ -1,7 +1,6 @@
 ﻿using Applebrie.Core.Entities;
 using Applebrie.Core.Interfaces;
 using Applebrie.Infrastructure.Repositories;
-using FluentAssertions;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Threading;
@@ -25,11 +24,11 @@ namespace Applebrie.IntegrationTests.Repositories
         [Test]
         public async Task CanCreatUserType()
         {
-            
-            var newUserType = new UserType { Name = "Test Type" };
-            await _userTypeRepository.AddAsync(newUserType, CancellationToken.None);
+            var userType = new UserType { Name = "Test Type" };
 
-            newUserType.Id.Should().NotBe(0);
+            await _userTypeRepository.AddAsync(userType, CancellationToken.None);
+
+            Assert.AreNotEqual(userType.Id, 0);
         }
 
 

@@ -1,5 +1,4 @@
 ﻿using Applebrie.Core.Entities;
-using FluentAssertions;
 using NUnit.Framework;
 
 namespace Applebrie.UnitTests.Entities
@@ -13,7 +12,7 @@ namespace Applebrie.UnitTests.Entities
         {
             var userType = new UserType();
 
-            userType.Users.Count.Should().Be(0);
+            Assert.AreEqual(userType.Users.Count, 0);
         }
     }
 }
