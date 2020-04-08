@@ -16,6 +16,7 @@ namespace Applebrie.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class UserTypesController : ControllerBase
     {
         private readonly IUserTypeService _userTypeService;

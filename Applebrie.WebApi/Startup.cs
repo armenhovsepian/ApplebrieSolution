@@ -8,13 +8,10 @@ using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
-using System;
-using System.IO;
-using System.Reflection;
 
 namespace Applebrie.WebApi
 {
@@ -45,33 +42,31 @@ namespace Applebrie.WebApi
             services.AddMvc(options =>
                 {
                     options.Filters.Add(typeof(JsonExceptionFilter));
-                    //options.Filters.Add(typeof(ValidateModelStateFilter));
-                    options.Filters.Add(typeof(RequireHttpsAttribute));
                 })               
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Applebrie API", Version = "v1" });
-
-                // Set the comments path for the Swagger JSON and UI.
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
-                services.AddRouting(options => options.LowercaseUrls = true);
-            });
-
-
-
-            //services.AddApiVersioning(options =>
+            //services.AddSwaggerGen(c =>
             //{
-            //    options.ApiVersionReader = new MediaTypeApiVersionReader();
-            //    options.AssumeDefaultVersionWhenUnspecified = true;
-            //    options.ReportApiVersions = true;
-            //    options.DefaultApiVersion = new ApiVersion(1, 0);
-            //    options.ApiVersionSelector = new CurrentImplementationApiVersionSelector(options);
+            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Applebrie API", Version = "v1" });
+
+            //    // Set the comments path for the Swagger JSON and UI.
+            //    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            //    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            //    c.IncludeXmlComments(xmlPath);
+            //    services.AddRouting(options => options.LowercaseUrls = true);
             //});
+
+
+
+            services.AddApiVersioning(options =>
+            {
+                options.ApiVersionReader = new MediaTypeApiVersionReader();
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.ReportApiVersions = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.ApiVersionSelector = new CurrentImplementationApiVersionSelector(options);
+            });
 
 
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
@@ -86,14 +81,14 @@ namespace Applebrie.WebApi
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
+            //app.UseSwagger();
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Applebrie API V1");
-            });
+            //app.UseSwaggerUI(c =>
+            //{
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Applebrie API V1");
+            //});
 
             if (env.IsDevelopment())
             {
@@ -110,24 +105,6 @@ namespace Applebrie.WebApi
             //    var context = serviceScope.ServiceProvider.GetService<ApplebrieDbContext>();
             //    ApplebrieDbContextSeed.SeedData(context);
             //}
-
-            //var builder = new ConfigurationBuilder()
-            //    .SetBasePath(env.ContentRootPath)
-            //    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            //    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-            //    .AddEnvironmentVariables();
-            //Configuration = builder.Build();
-
-            //if (env.IsDevelopment())
-            //{
-            //    var launchJsonConfig = new ConfigurationBuilder()
-            //        .SetBasePath(env.ContentRootPath)
-            //        .AddJsonFile("Properties\\launchSettings.json")
-            //        .Build();
-
-            //    var _httpsport = launchJsonConfig.GetValue<int>("iisSettings:iisExpress:sslPort");
-            //}
-
 
             app.UseHttpsRedirection();
             app.UseMvc();
