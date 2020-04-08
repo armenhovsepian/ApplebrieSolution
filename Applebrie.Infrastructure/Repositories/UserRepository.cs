@@ -2,6 +2,8 @@
 using Applebrie.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Applebrie.Infrastructure.Repositories
@@ -14,18 +16,20 @@ namespace Applebrie.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<User> GetByIdWithUserTypeAsync(int id)
+        public async Task<User> GetByIdWithUserTypeAsync(int id, CancellationToken ct)
         {
             return await _dbContext.Users
                 .Include(u => u.UserType)
-                .SingleOrDefaultAsync(u => u.Id == id);
+                .SingleOrDefaultAsync(u => u.Id == id, ct);
         }
 
-        public async Task<IEnumerable<User>> ListAllWithUserTypeAsync()
+        public async Task<IEnumerable<User>> GetAllWithUserTypePagedListAsync(int take, int skip, CancellationToken ct)
         {
             return await _dbContext.Users
                 .Include(u => u.UserType)
-                .ToListAsync();
+                .Take(take)
+                .Skip(skip)
+                .ToListAsync(ct);
         }
     }
 }

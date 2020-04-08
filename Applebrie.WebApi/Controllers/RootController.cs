@@ -18,7 +18,7 @@ namespace Applebrie.WebApi.Controllers
 
                 Users = new 
                 {
-                    href = Url.Link(nameof(UsersController.GetUsers), null)
+                    href = Url.Link(nameof(UsersController.GetUsersAsync), null)
                 }
                 
                

@@ -1,9 +1,5 @@
-﻿using Applebrie.Core.Dtos;
-using Applebrie.Core.Interfaces;
+﻿using Applebrie.Core.Interfaces;
 using AutoMapper;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Applebrie.Infrastructure.Services
 {
@@ -19,10 +15,5 @@ namespace Applebrie.Infrastructure.Services
         }
 
 
-        public async Task<IEnumerable<UserTypeDto>> GetAllAsync()
-        {
-            var userTypes = await _userTypeRepository.ListAllAsync();
-            return userTypes.Select(user => _mapper.Map<UserTypeDto>(user));
-        }
     }
 }
