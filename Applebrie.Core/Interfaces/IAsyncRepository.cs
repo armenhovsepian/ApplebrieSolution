@@ -9,7 +9,7 @@ namespace Applebrie.Core.Interfaces
     {
         Task<T> GetByIdAsync(int id, CancellationToken ct);
         Task<IReadOnlyList<T>> GetAllListAsync(CancellationToken ct);
-        Task<IReadOnlyList<T>> GetAllPagedListAsync(int take, int skip, CancellationToken ct);
+        Task<IReadOnlyList<T>> GetAllListAsync(ISpecification<T> spec, CancellationToken ct);
         Task<T> AddAsync(T entity, CancellationToken ct);
         Task UpdateAsync(T entity, CancellationToken ct);
         Task DeleteAsync(T entity, CancellationToken ct);

@@ -1,6 +1,7 @@
 ﻿using Applebrie.Core.Dtos;
 using Applebrie.Core.Entities;
 using Applebrie.Core.Interfaces;
+using Applebrie.Core.Specifications;
 using Applebrie.WebApi.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -30,10 +31,16 @@ namespace Applebrie.WebApi.Controllers
 
         // GET api/users
         // GET api/users?pagesize=3&pagenumber=1
+        // GET api/users?usertypeid=1
+        // GET api/users?pagesize=3&pagenumber=1&usertypeid=1
         [HttpGet(Name = nameof(GetUsersAsync))]
-        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsersAsync([FromQuery] PagingOptions pagingOptions, CancellationToken ct)
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsersAsync(
+            [FromQuery] PagingOptions pagingOptions,
+            [FromQuery] SearchOptions searchOptions,
+            CancellationToken ct)
         {
-            var users = await _userRepository.GetAllWithUserTypePagedListAsync(pagingOptions.Take, pagingOptions.Skip, ct);
+            var userSpec = new UserFilterSpecification(pagingOptions.Skip, pagingOptions.Take, searchOptions.UserTypeId);
+            var users = await _userRepository.GetAllListAsync(userSpec, ct);
             var userDtos = users.Select(user => _mapper.Map<UserDto>(user));
             return Ok(userDtos);
         }

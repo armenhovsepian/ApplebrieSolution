@@ -28,11 +28,9 @@ namespace Applebrie.Infrastructure.Repositories
             return await _dbContext.Set<T>().ToListAsync(ct);
         }
 
-        public async Task<IReadOnlyList<T>> GetAllPagedListAsync(int take, int skip, CancellationToken ct)
+        public async Task<IReadOnlyList<T>> GetAllListAsync(ISpecification<T> spec, CancellationToken ct)
         {
-            return await _dbContext.Set<T>().Skip(skip).Take(take)
-                .AsNoTracking()
-                .ToListAsync(ct);
+            return await ApplySpecification(spec).ToListAsync(ct);
         }
 
         public async Task<T> AddAsync(T entity, CancellationToken ct)
@@ -59,5 +57,11 @@ namespace Applebrie.Infrastructure.Repositories
         {
             _dbContext?.Dispose();
         }
+
+        public IQueryable<T> ApplySpecification(ISpecification<T> spec)
+        {
+            return SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec);
+        }
     }
+
 }
