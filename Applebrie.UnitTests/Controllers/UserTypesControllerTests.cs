@@ -46,7 +46,7 @@ namespace Applebrie.UnitTests.Controllers
         public async Task GetUserType_UserTypeExists_ShouldReturnsOK()
         {
             _userTypeRepository.Setup(r => r.GetByIdAsync(It.IsAny<int>(), _ct))
-                .ReturnsAsync(new UserType { Name = "ut" });
+                .ReturnsAsync(new UserType { Name = "user type" });
 
             var actionResult = await _controller.GetUserTypeAsync(It.IsAny<int>(), CancellationToken.None);
 
@@ -59,13 +59,13 @@ namespace Applebrie.UnitTests.Controllers
         {
             _userTypeRepository.Setup(r => r.AddAsync(It.IsAny<UserType>(), _ct));
 
-            var model = new UserTypeFormModel { Name = "user type 1" };
+            var model = new UserTypeFormModel { Name = "user type" };
             var actionResult = await _controller.CreateUserTypeAsync(model, _ct);
 
 
             Assert.IsInstanceOf<CreatedAtActionResult>(actionResult);
             var result = actionResult as CreatedAtActionResult;
-            Assert.AreEqual(result.ActionName, "GetUserTypeAsync");
+            Assert.AreEqual(result.ActionName, nameof(UserTypesController.GetUserTypeAsync));
         }
 
     }
