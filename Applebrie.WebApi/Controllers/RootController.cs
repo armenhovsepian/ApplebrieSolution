@@ -9,12 +9,21 @@ namespace Applebrie.WebApi.Controllers
         [HttpGet(Name = nameof(GetRoot))]
         public IActionResult GetRoot()
         {
-            var res = new
+            var resources = new
             {
-                //href = "url"
-                href= Url.Link(nameof(GetRoot), null)
+                UserTypes = new
+                {
+                    href = Url.Link(nameof(UserTypesController.GetUserTypes), null)
+                },
+
+                Users = new 
+                {
+                    href = Url.Link(nameof(UsersController.GetUsers), null)
+                }
+                
+               
             };
-            return Ok(res);
+            return Ok(resources);
         }
 
 

@@ -1,5 +1,10 @@
-﻿using Applebrie.Infrastructure;
+﻿using Applebrie.Core.Interfaces;
+using Applebrie.Infrastructure;
+using Applebrie.Infrastructure.Repositories;
+using Applebrie.Infrastructure.Services;
 using Applebrie.WebApi.Filters;
+using Applebrie.WebApi.Infrustructure;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -27,11 +32,20 @@ namespace Applebrie.WebApi
         {
             services.AddDbContext<ApplebrieDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            //services.AddAutoMapper(typeof(Startup));
+
+            // Auto Mapper Configurations
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             services.AddMvc(options =>
                 {
                     options.Filters.Add(typeof(JsonExceptionFilter));
+                    //options.Filters.Add(typeof(ValidateModelStateFilter));
                     options.Filters.Add(typeof(RequireHttpsAttribute));
                 })               
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -58,6 +72,14 @@ namespace Applebrie.WebApi
             //    options.DefaultApiVersion = new ApiVersion(1, 0);
             //    options.ApiVersionSelector = new CurrentImplementationApiVersionSelector(options);
             //});
+
+
+            services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
+            services.AddScoped<IUserTypeRepository, UserTypeRepository>();
+            services.AddScoped<IUserTypeService, UserTypeService>();
+
+            services.AddScoped<IUserRepository, UserRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -82,6 +104,12 @@ namespace Applebrie.WebApi
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            //using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            //{
+            //    var context = serviceScope.ServiceProvider.GetService<ApplebrieDbContext>();
+            //    ApplebrieDbContextSeed.SeedData(context);
+            //}
 
             //var builder = new ConfigurationBuilder()
             //    .SetBasePath(env.ContentRootPath)
