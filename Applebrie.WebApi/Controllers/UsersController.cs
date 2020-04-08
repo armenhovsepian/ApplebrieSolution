@@ -54,13 +54,14 @@ namespace Applebrie.WebApi.Controllers
         public async Task<ActionResult> CreateUserAsync([FromBody] UserFormModel model, CancellationToken ct)
         {
             var userType = await _userTypeRepository.GetByIdAsync(model.UserType.Id, ct);
-            if (userType == null) return BadRequest();
+            if (userType == null) return BadRequest(new ApiError("UserType Id is invalid!"));
 
-            var user = new User {
+            var user = new User
+            {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 UserTypeId = userType.Id
-                
+
             };
             await _userRepository.AddAsync(user, ct);
 
@@ -87,7 +88,7 @@ namespace Applebrie.WebApi.Controllers
             if (id != model.Id) return BadRequest();
 
             var userType = await _userTypeRepository.GetByIdAsync(model.UserType.Id, ct);
-            if (userType == null) return BadRequest();
+            if (userType == null) return BadRequest(new ApiError { Message = "UserType Id is wrong!" });
 
             var user = await _userRepository.GetByIdAsync(id, ct);
             if (user == null) return NotFound();

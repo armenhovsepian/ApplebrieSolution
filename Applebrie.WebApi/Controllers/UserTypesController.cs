@@ -12,22 +12,19 @@ using System.Threading.Tasks;
 
 namespace Applebrie.WebApi.Controllers
 {
-    /// <summary>
-    /// https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-3.1&tabs=visual-studio
-    /// </summary>
+
     [Route("api/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
     public class UserTypesController : ControllerBase
     {
-        //private readonly IUserTypeService _userTypeService;
         private readonly IUserTypeRepository _userTypeRepository;
         private readonly IMapper _mapper;
 
 
+
         public UserTypesController(IUserTypeRepository userTypeRepository, IMapper mapper)
         {
-            //_userTypeService = userTypeService;
             _userTypeRepository = userTypeRepository;
             _mapper = mapper;
         }
@@ -37,7 +34,7 @@ namespace Applebrie.WebApi.Controllers
         // GET api/usertypes?pagesize=3&pagenumber=1
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserTypeDto>>> GetUserTypes([FromQuery] PagingOptions pagingOptions, CancellationToken ct)
+        public async Task<ActionResult<IEnumerable<UserTypeDto>>> GetUserTypesAsync([FromQuery] PagingOptions pagingOptions, CancellationToken ct)
         {
 
             var userTypes = await _userTypeRepository.GetAllPagedListAsync(pagingOptions.Take, pagingOptions.Skip, ct);
@@ -46,7 +43,7 @@ namespace Applebrie.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserTypeDto>> GetUserType(int id, CancellationToken ct)
+        public async Task<ActionResult<UserTypeDto>> GetUserTypeAsync(int id, CancellationToken ct)
         {
             var data = await _userTypeRepository.GetByIdAsync(id, ct);
 
@@ -57,18 +54,18 @@ namespace Applebrie.WebApi.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> CreateUserType([FromBody] UserTypeFormModel model, CancellationToken ct)
+        public async Task<ActionResult> CreateUserTypeAsync([FromBody] UserTypeFormModel model, CancellationToken ct)
         {
             var userType = new UserType { Name = model.Name };
 
             await _userTypeRepository.AddAsync(userType, ct);
 
-            return CreatedAtAction(nameof(GetUserType), new { id = userType.Id }, userType);
+            return CreatedAtAction(nameof(GetUserTypeAsync), new { id = userType.Id }, userType);
         }
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUserType(int id, CancellationToken ct)
+        public async Task<IActionResult> DeleteUserTypeAsync(int id, CancellationToken ct)
         {
             var userType = await _userTypeRepository.GetByIdAsync(id, ct);
 
@@ -82,7 +79,7 @@ namespace Applebrie.WebApi.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUserType(int id, UserTypeFormModel model, CancellationToken ct)
+        public async Task<IActionResult> UpdateUserTypeAsync(int id, UserTypeFormModel model, CancellationToken ct)
         {
             if (id != model.Id) return BadRequest();
 

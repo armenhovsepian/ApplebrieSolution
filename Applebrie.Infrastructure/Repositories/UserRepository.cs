@@ -27,8 +27,8 @@ namespace Applebrie.Infrastructure.Repositories
         {
             return await _dbContext.Users
                 .Include(u => u.UserType)
-                .Take(take)
                 .Skip(skip)
+                .Take(take)
                 .ToListAsync(ct);
         }
     }

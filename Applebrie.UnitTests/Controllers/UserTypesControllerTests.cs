@@ -1,4 +1,4 @@
-﻿using Applebrie.Core.Entities;
+using Applebrie.Core.Entities;
 using Applebrie.Core.Interfaces;
 using Applebrie.WebApi.Controllers;
 using Applebrie.WebApi.Models;
@@ -36,7 +36,7 @@ namespace Applebrie.UnitTests.Controllers
             _userTypeRepository.Setup(r => r.GetByIdAsync(It.IsAny<int>(), _ct))
                 .ReturnsAsync(default(UserType));
 
-            var actionResult = await _controller.GetUserType(It.IsAny<int>(), _ct);
+            var actionResult = await _controller.GetUserTypeAsync(It.IsAny<int>(), _ct);
 
             Assert.IsNull(actionResult.Value);
             Assert.IsInstanceOf<NotFoundResult>(actionResult.Result);
@@ -48,7 +48,7 @@ namespace Applebrie.UnitTests.Controllers
             _userTypeRepository.Setup(r => r.GetByIdAsync(It.IsAny<int>(), _ct))
                 .ReturnsAsync(new UserType { Name = "ut" });
 
-            var actionResult = await _controller.GetUserType(It.IsAny<int>(), CancellationToken.None);
+            var actionResult = await _controller.GetUserTypeAsync(It.IsAny<int>(), CancellationToken.None);
 
             Assert.IsInstanceOf<OkObjectResult>(actionResult.Result);
 
@@ -60,12 +60,12 @@ namespace Applebrie.UnitTests.Controllers
             _userTypeRepository.Setup(r => r.AddAsync(It.IsAny<UserType>(), _ct));
 
             var model = new UserTypeFormModel { Name = "user type 1" };
-            var actionResult = await _controller.CreateUserType(model, _ct);
+            var actionResult = await _controller.CreateUserTypeAsync(model, _ct);
 
 
             Assert.IsInstanceOf<CreatedAtActionResult>(actionResult);
             var result = actionResult as CreatedAtActionResult;
-            Assert.AreEqual(result.ActionName, "GetUserType");
+            Assert.AreEqual(result.ActionName, "GetUserTypeAsync");
         }
 
     }

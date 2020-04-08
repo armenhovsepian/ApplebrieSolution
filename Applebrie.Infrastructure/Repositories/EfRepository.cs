@@ -20,7 +20,7 @@ namespace Applebrie.Infrastructure.Repositories
 
         public async Task<T> GetByIdAsync(int id, CancellationToken ct)
         {
-            return await _dbContext.Set<T>().FindAsync(id, ct);
+            return await _dbContext.Set<T>().SingleOrDefaultAsync(e => e.Id == id, ct);
         }
 
         public async Task<IReadOnlyList<T>> GetAllListAsync(CancellationToken ct)
@@ -30,7 +30,7 @@ namespace Applebrie.Infrastructure.Repositories
 
         public async Task<IReadOnlyList<T>> GetAllPagedListAsync(int take, int skip, CancellationToken ct)
         {
-            return await _dbContext.Set<T>().Take(take).Skip(skip).ToListAsync(ct);
+            return await _dbContext.Set<T>().Skip(skip).Take(take).ToListAsync(ct);
         }
 
         public async Task<T> AddAsync(T entity, CancellationToken ct)
