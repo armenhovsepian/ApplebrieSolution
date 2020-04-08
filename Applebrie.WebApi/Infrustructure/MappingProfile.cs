@@ -11,7 +11,6 @@ namespace Applebrie.WebApi.Infrustructure
             CreateMap<UserType, UserTypeDto>();
 
             CreateMap<User, UserDto>();
-            //.ForMember(dest => dest.UserTypeName, opt => opt.MapFrom(src => src.UserType.Name));
         }
     }
 }

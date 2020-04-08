@@ -30,7 +30,9 @@ namespace Applebrie.Infrastructure.Repositories
 
         public async Task<IReadOnlyList<T>> GetAllPagedListAsync(int take, int skip, CancellationToken ct)
         {
-            return await _dbContext.Set<T>().Skip(skip).Take(take).ToListAsync(ct);
+            return await _dbContext.Set<T>().Skip(skip).Take(take)
+                .AsNoTracking()
+                .ToListAsync(ct);
         }
 
         public async Task<T> AddAsync(T entity, CancellationToken ct)

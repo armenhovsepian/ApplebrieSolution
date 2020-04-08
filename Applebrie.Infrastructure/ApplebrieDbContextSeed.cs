@@ -1,6 +1,6 @@
 ﻿using Applebrie.Core.Entities;
-using Microsoft.EntityFrameworkCore.Internal;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Applebrie.Infrastructure
 {
@@ -27,6 +27,16 @@ namespace Applebrie.Infrastructure
                     context.UserTypes.Add(seed);
                 }
 
+                context.SaveChanges();
+            }
+
+
+            if (!context.Users.Any())
+            {
+                var admin = context.UserTypes.SingleOrDefault(u => u.Name == "Administrator");
+
+                var user = new User {FirstName = "Armen", LastName = "Hovsepian", UserType = admin};
+                context.Users.Add(user);
                 context.SaveChanges();
             }
         }

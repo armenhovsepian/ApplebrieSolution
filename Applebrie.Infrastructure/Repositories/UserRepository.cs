@@ -29,6 +29,7 @@ namespace Applebrie.Infrastructure.Repositories
                 .Include(u => u.UserType)
                 .Skip(skip)
                 .Take(take)
+                .AsNoTracking()
                 .ToListAsync(ct);
         }
     }

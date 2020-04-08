@@ -1,7 +1,6 @@
 ﻿using Applebrie.Core.Interfaces;
 using Applebrie.Infrastructure;
 using Applebrie.Infrastructure.Repositories;
-using Applebrie.Infrastructure.Services;
 using Applebrie.WebApi.Filters;
 using Applebrie.WebApi.Infrustructure;
 using AutoMapper;
@@ -30,7 +29,6 @@ namespace Applebrie.WebApi
             services.AddDbContext<ApplebrieDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappingProfile());
@@ -57,8 +55,6 @@ namespace Applebrie.WebApi
 
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
             services.AddScoped<IUserTypeRepository, UserTypeRepository>();
-            services.AddScoped<IUserTypeService, UserTypeService>();
-
             services.AddScoped<IUserRepository, UserRepository>();
 
         }
@@ -74,6 +70,12 @@ namespace Applebrie.WebApi
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+            }
+
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetService<ApplebrieDbContext>();
+                ApplebrieDbContextSeed.SeedData(context);
             }
 
             app.UseHttpsRedirection();
