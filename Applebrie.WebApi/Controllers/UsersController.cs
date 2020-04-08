@@ -30,7 +30,7 @@ namespace Applebrie.WebApi.Controllers
 
         // GET api/users
         // GET api/users?pagesize=3&pagenumber=1
-        [HttpGet]
+        [HttpGet(Name = nameof(GetUsersAsync))]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsersAsync([FromQuery] PagingOptions pagingOptions, CancellationToken ct)
         {
             var users = await _userRepository.GetAllWithUserTypePagedListAsync(pagingOptions.Take, pagingOptions.Skip, ct);
@@ -39,7 +39,7 @@ namespace Applebrie.WebApi.Controllers
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = nameof(GetUserAsync))]
         public async Task<ActionResult<UserDto>> GetUserAsync(int id, CancellationToken ct)
         {
             var data = await _userRepository.GetByIdWithUserTypeAsync(id, ct);

@@ -33,7 +33,7 @@ namespace Applebrie.WebApi.Controllers
         // GET api/usertypes
         // GET api/usertypes?pagesize=3&pagenumber=1
 
-        [HttpGet]
+        [HttpGet(Name = nameof(GetUserTypesAsync))]
         public async Task<ActionResult<IEnumerable<UserTypeDto>>> GetUserTypesAsync([FromQuery] PagingOptions pagingOptions, CancellationToken ct)
         {
 
