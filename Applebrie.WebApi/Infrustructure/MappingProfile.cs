@@ -8,9 +8,19 @@ namespace Applebrie.WebApi.Infrustructure
     {
         public MappingProfile()
         {
-            CreateMap<UserType, UserTypeDto>();
+            MapFromDomainObject();
+            MapToDomainObject();
+        }
 
+        private void MapFromDomainObject()
+        {
+            CreateMap<UserType, UserTypeDto>();
             CreateMap<User, UserDto>();
         }
-    }
+
+        private void MapToDomainObject()
+        {
+            CreateMap<UserTypeDto, UserType>();
+        }
+    } 
 }

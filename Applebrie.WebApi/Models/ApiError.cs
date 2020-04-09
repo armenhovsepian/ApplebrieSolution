@@ -9,19 +9,19 @@ namespace Applebrie.WebApi.Models
     {
         public ApiError()
         {
-            
+
         }
 
         public ApiError(string message)
         {
-            
+
         }
 
         public ApiError(ModelStateDictionary modelState)
         {
             Message = "Invalid Parameters.";
-            Detail = modelState.FirstOrDefault(x => x.Value.Errors.Any()).Value.Errors
-                .FirstOrDefault().ErrorMessage;
+            Detail = string.Join(", ", modelState.SelectMany(m => m.Value.Errors)
+                .Select(m => m.ErrorMessage));
         }
 
 
