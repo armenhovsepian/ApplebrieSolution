@@ -22,8 +22,6 @@ namespace Applebrie.WebApi.Controllers
         private readonly IUserTypeRepository _userTypeRepository;
         private readonly IMapper _mapper;
 
-
-
         public UserTypesController(IUserTypeRepository userTypeRepository, IMapper mapper)
         {
             _userTypeRepository = userTypeRepository;
@@ -36,13 +34,14 @@ namespace Applebrie.WebApi.Controllers
         [HttpGet(Name = nameof(GetUserTypesAsync))]
         public async Task<ActionResult<IEnumerable<UserTypeDto>>> GetUserTypesAsync([FromQuery] PagingOptions pagingOptions, CancellationToken ct)
         {
-            var userTypeSpec = new UserTypeFilterSpecification(pagingOptions.Take, pagingOptions.Skip);
+            var userTypeSpec = new UserTypeFilterSpecification(pagingOptions.Skip, pagingOptions.Take);
             var userTypes = await _userTypeRepository.GetAllListAsync(userTypeSpec, ct);
             var data = userTypes.Select(ut => _mapper.Map<UserTypeDto>(ut));
             return Ok(data);
         }
 
         [HttpGet("{id}")]
+        //[TypeFilter(typeof(ValidateUserTypeExists))]
         public async Task<ActionResult<UserTypeDto>> GetUserTypeAsync(int id, CancellationToken ct)
         {
             var data = await _userTypeRepository.GetByIdAsync(id, ct);
@@ -54,6 +53,7 @@ namespace Applebrie.WebApi.Controllers
 
 
         [HttpPost]
+        //[ValidateModel]
         public async Task<ActionResult> CreateUserTypeAsync([FromBody] UserTypeFormModel model, CancellationToken ct)
         {
             var userType = new UserType { Name = model.Name };
@@ -65,6 +65,7 @@ namespace Applebrie.WebApi.Controllers
 
 
         [HttpDelete("{id}")]
+        //[TypeFilter(typeof(ValidateUserTypeExists))]
         public async Task<IActionResult> DeleteUserTypeAsync(int id, CancellationToken ct)
         {
             var userType = await _userTypeRepository.GetByIdAsync(id, ct);
@@ -77,8 +78,9 @@ namespace Applebrie.WebApi.Controllers
         }
 
 
-
+       
         [HttpPut("{id}")]
+        //[TypeFilter(typeof(ValidateUserTypeExists))]
         public async Task<IActionResult> UpdateUserTypeAsync(int id, UserTypeFormModel model, CancellationToken ct)
         {
             if (id != model.Id) return BadRequest();
